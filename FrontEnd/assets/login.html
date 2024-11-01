@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sophie Bluel - Architecte d'intérieur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+    <!-- Header et navigation (comme dans index.html) -->
+    <header>
+        <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+        <nav>
+            <ul>
+                <li><a href="./index.html#projets">projets</a></li>
+                <li><a href="./index.html#contact">contact</a></li>
+                   <!-- Bouton Login/Logout -->
+            <li><a id="loginBtn" href="./login.html">login</a></li>
+            <li><a id="logoutBtn" href="./logout.html" style="display: none;">logout</a></li>
+                <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Section de connexion -->
+    <section class="login-section" id="contact">
+        <div class="login-form">
+            <h2>Log In</h2>
+            <form id="login-form">  <!-- ID du formulaire -->
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="Entrez votre e-mail" required>
+                
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" placeholder="Entrez votre mot de passe" required>
+    
+                <input type="submit" value="Se connecter">
+                <div id="error-message" ></div> <!-- Pour afficher les erreurs -->
+                <a href="#" class="forgot-password">Mot de passe oublié</a>
+            </form>
+        </div>
+    </section>
+    
+
+    <script src="./login.js"></script>
+    
+
+</body>
+</html>
