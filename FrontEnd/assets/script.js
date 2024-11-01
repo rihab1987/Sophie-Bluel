@@ -45,7 +45,7 @@ async function getCategories() {
 async function createFilterButtons() {
     const categories = await getCategories();
     buttonContainer.innerHTML = ''; // Réinitialise le conteneur des boutons
-    
+
     // fonction pour définir le bouton actif pour qu'elle change du couleur au moment du click 
     function setActiveButton(activeButton){
         const buttons = buttonContainer.querySelectorAll('button');
@@ -73,8 +73,7 @@ async function createFilterButtons() {
         buttonContainer.appendChild(button);
     });
 }
-
-// Population des options de catégorie dans le formulaire d’ajout
+// Remplit la liste déroulante de catégories dans le formulaire d'ajout 
 async function populateCategorySelect() {
     const categories = await getCategories();
     const select = document.getElementById("modalCategory");
@@ -94,7 +93,6 @@ async function populateCategorySelect() {
         select.appendChild(option);
     });
 }
-
 // Appel des fonctions pour initialiser les éléments avec les catégories
 createFilterButtons();
 populateCategorySelect();
