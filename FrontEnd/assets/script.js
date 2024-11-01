@@ -45,7 +45,8 @@ async function getCategories() {
 async function createFilterButtons() {
     const categories = await getCategories();
     buttonContainer.innerHTML = ''; // Réinitialise le conteneur des boutons
-    // fonction pour définir le bouton actif 
+    
+    // fonction pour définir le bouton actif pour qu'elle change du couleur au moment du click 
     function setActiveButton(activeButton){
         const buttons = buttonContainer.querySelectorAll('button');
         buttons.forEach(button =>button.classList.remove('button-active'));
