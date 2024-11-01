@@ -21,6 +21,7 @@ const token = localStorage.getItem('token');
 const editBar = document.querySelector('.edit-bar'); 
 const openGalleryBtn = document.getElementById("openGalleryBtn");
 
+
 function logout(event){
     event.preventDefault()// Empêche le comportement par défaut du lien (ne pas rediriger immédiatement)
     localStorage.clear() // Vide le localStorage pour déconnecter l'utilisateur
@@ -46,13 +47,13 @@ async function createFilterButtons() {
     const categories = await getCategories();
     buttonContainer.innerHTML = ''; // Réinitialise le conteneur des boutons
 
-    // fonction pour définir le bouton actif pour qu'elle change du couleur au moment du click 
+// fonction pour définir le bouton actif pour qu'elle change du couleur au moment du click 
     function setActiveButton(activeButton){
         const buttons = buttonContainer.querySelectorAll('button');
         buttons.forEach(button =>button.classList.remove('button-active'));
         activeButton.classList.add('button-active');
     }
-    // Ajouter le bouton "Tous"
+// Ajouter le bouton "Tous"
     const allButton = document.createElement('button');
     allButton.id = 'filter-all';
     allButton.textContent = 'Tous';
@@ -99,6 +100,7 @@ populateCategorySelect();
 
 
 // Récupération des travaux depuis l'API
+
 async function getWorks() {
     try {
         let response = await fetch("http://localhost:5678/api/works");
@@ -112,10 +114,8 @@ async function getWorks() {
         return []; // Renvoie un tableau vide en cas d'erreur
     }
 }
-
- 
-
 // Fonction pour afficher les travaux sur la page principale
+
 async function displayWorks(filter = 'tous') {
     let works = await getWorks(); // Récupérer les travaux depuis l'API
     gallery.innerHTML = ''; // Vide la galerie avant d'ajouter les nouveaux éléments
@@ -123,7 +123,7 @@ async function displayWorks(filter = 'tous') {
     let filteredWorks = works;// Par défaut, aucun filtrage (affiche tous les travaux)
 
     if (filter !== 'tous') {
-        // Filtre les travaux par catégorie si un filtre est appliqué
+ // Filtre les travaux par catégorie si un filtre est appliqué
         filteredWorks = works.filter(work => work.category && work.category.name.toLowerCase() === filter.toLowerCase());
     }
 
@@ -153,15 +153,17 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Fonction pour vérifier si l'utilisateur est connecté
+
 function checkLoginStatus() {
     const token = localStorage.getItem('token');// Récupère le token du localStorage
     const isLoggedIn = !!token;// Vérifie si un token est présent (l'utilisateur est connecté)
 // Gérer l'affichage des boutons login et logout
+
     loginBtn.style.display = isLoggedIn ? 'none' : 'inline-block';
     LogoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
     document.getElementById('openGalleryBtn').style.display = isLoggedIn ? 'inline-block' : 'none';
+// Gérer l'affichage des filtres et du bouton "modifier"
 
-     // Gérer l'affichage des filtres et du bouton "modifier"
      const filterContainer = document.querySelector('.button-container'); // Sélectionne le conteneur des filtres
      const modifyButton = document.getElementById('openGalleryBtn'); // Sélectionne le bouton "modifier"
  
@@ -172,27 +174,24 @@ function checkLoginStatus() {
          filterContainer.style.display = 'flex' ; // Afficher les filtres si l'utilisateur n'est pas connecté
          modifyButton.style.display = 'none'; // Cacher le bouton modifier
      }
-     // Ajouter la classe logged-in au body si l'utilisateur est connecté
+// Ajouter la classe logged-in au body si l'utilisateur est connecté
+
      if (isLoggedIn) {
         document.body.classList.add('logged-in');
     } else {
         document.body.classList.remove('logged-in');
     }
 }
-
-
-// Modale
-
 // Fonction pour afficher les travaux dans la modale
+
 async function displayModalWorks() {
     const works = await getWorks(); // Récupérer les travaux depuis l'API
     console.log("travaux récupérés:",works); // pour voir si les travaux sont bien récupérés
     const galleryModal = document.getElementById('galleryModal'); // Sélectionner la galerie dans la modale
     galleryModal.innerHTML = ''; // Vide la galerie avant d'ajouter les nouveaux éléments
 
-
-    
 // Parcourt tous les travaux et les ajoute à la modale
+
     for (let work of works) {
         const figure = document.createElement('figure');// Crée une figure pour chaque travail
         const img = document.createElement('img');// crée une image 
@@ -201,13 +200,14 @@ async function displayModalWorks() {
         const figcaption = document.createElement('figcaption');// Crée une légende pour la figure 
         figcaption.textContent = work.title;// Définit le texte de la légende comme étant le titre du travail
 
-        // Création du bouton de suppression pour chaque travail 
+// Création du bouton de suppression pour chaque travail 
 
         const deleteButton = document.createElement('button');
         deleteButton.innerHTML = '<i class="fa-solid fa-trash-can" aria-hidden="true"></i>'; // Icône de suppression
         deleteButton.classList.add('delete-button'); // Classe pour styliser le bouton
 
-        // Écouteur d'événements pour supprimer le projet
+// Écouteur d'événements pour supprimer le projet
+
         deleteButton.addEventListener('click', () => {
             deleteProject(work.id,figure); // Passe l'ID et la figure à la fonction de suppression
         });
@@ -220,6 +220,7 @@ async function displayModalWorks() {
 }
 
 // Fonction pour mettre à jour la visibilité de la bande noire
+
 function updateEditBarVisibility() {
     if (token) {
         editBar.style.display = 'flex'; // Afficher la bande noire si l'utilisateur est connecté
@@ -249,7 +250,7 @@ function displayModal() {
         containerModal.style.display = "none";
     });
 
-    //si on clique en dehors de la modale, containerModal disparait/se ferme
+//si on clique en dehors de la modale, containerModal disparait/se ferme
     containerModal.addEventListener("click", (e) => {
         if (e.target.id === "containerModal") {
             resetFormFields();
@@ -275,13 +276,13 @@ function deleteProject(projectId, figureElement) {
         if (response.ok) {
             console.log(`Le projet avec l'id ${projectId} a été supprimé.`);
             console.log('Élément à supprimer:', figureElement); // Vérifie que l'élément existe
-            // Supprimer l'élément du DOM
+// Supprimer l'élément du DOM
             if (figureElement) {
                 figureElement.remove(); // Retirer l'élément du DOM
             } else {
                 console.error("L'élément à supprimer n'a pas été trouvé.");
             }
-            // Mettre à jour la galerie principale
+// Mettre à jour la galerie principale
             updateMainGallery(projectId);
         } else {
             console.error("Le delete a échoué. Code erreur:", response.status);
@@ -297,7 +298,7 @@ function deleteProject(projectId, figureElement) {
 function updateMainGallery(projectId) {
     const gallery = document.querySelector('.gallery');
     const workElement = gallery.querySelector(`[data-id='${projectId}']`);
- // Rechercher l'élément correspondant à l'ID du projet
+// Rechercher l'élément correspondant à l'ID du projet
 
     if (workElement) {
         workElement.remove(); // Supprimer l'élément de la galerie principale
@@ -376,7 +377,7 @@ modalForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    // Initialisez formData avant d'entrer dans le bloc try
+// Initialisez formData avant d'entrer dans le bloc try
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
@@ -429,17 +430,16 @@ const btnValidForm = document.querySelector(".btnValider");
 
 // Fonction pour vérifier si tous les champs sont remplis
 function checkFormValidity() {
-    // Vérifier que le titre, la catégorie et l'image sont remplis
+// Vérifier que le titre, la catégorie et l'image sont remplis
     const isTitleFilled = titleInput.value.trim() !== "";
     const isCategorySelected = categorySelect.value !== "";
     const isImageSelected = imageInput.files.length > 0;
 
-      // Si tous les champs sont remplis, activer le bouton ; sinon, le désactiver
+// Si tous les champs sont remplis, activer le bouton ; sinon, le désactiver
       btnValidForm.disabled = !(isTitleFilled && isCategorySelected && isImageSelected);
     
 
-    // Activer ou désactiver le bouton "Valider" en fonction des champs remplis
-      // Ajouter ou retirer la classe "valid" pour le style visuel
+// Activer ou désactiver le bouton "Valider" en fonction des champs remplis
       if (!btnValidForm.disabled) {
         btnValidForm.classList.add("valid");
     } else {
@@ -456,7 +456,7 @@ function displayAddModal() {
         btnValidForm.disabled = true; // Désactiver le bouton "Valider"
     });
 
-    // Gérer la fermeture de la modale
+// Gérer la fermeture de la modale
     modalArrow.addEventListener("click", () => {
         resetFormFields();
         modalAddWorks.style.display = "none";
