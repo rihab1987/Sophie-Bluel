@@ -84,7 +84,6 @@ async function populateCategorySelect() {
     defaultOption.value = "";
     defaultOption.selected = true;
     defaultOption.disabled = true;
-    defaultOption.textContent = "Choisir une catégorie";
     select.appendChild(defaultOption);
 
     categories.forEach(category => {
