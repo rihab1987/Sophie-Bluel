@@ -42,6 +42,65 @@ async function getCategories() {
         return []; // Retourne un tableau vide en cas d'erreur 
     }
 }
+// Récupération des travaux depuis l'API
+async function getWorks() {
+    try {
+        let response = await fetch("http://localhost:5678/api/works"); // Envoie une requete GET pour récupérer les travaux 
+        if (!response.ok) {
+            throw new Error(`Erreur ${response.status}: ${response.statusText}`); // Lève une erreur si la réponse n'est pas OK
+        }
+        return await response.json();// Retourne les données JSON des travaux
+    } catch (error) {
+        console.error("Erreur de chargement des travaux:", error);// Affiche l'erreur dans la console
+        alert("Erreur de chargement des travaux. Veuillez réessayer.");// Affiche une alerte en cas d'erreur
+        return []; // Renvoie un tableau vide en cas d'erreur
+    }
+}
+// Remplit la liste déroulante de catégories dans le formulaire d'ajout 
+async function populateCategorySelect() {
+    const categories = await getCategories();// Récupère les catégories
+    const select = document.getElementById("modalCategory");// Sélectionne la liste déroulante de catégories
+    select.innerHTML = '';// Réinitialise la liste déroulante
+    const defaultOption = document.createElement("option");// Crée une option par défaut
+    defaultOption.value = "";// Aucune valeur par défaut
+    defaultOption.selected = true;// Définit cette option comme sélectionnée par défaut
+    defaultOption.disabled = true;// Désactive l'option par défaut
+    select.appendChild(defaultOption);// Ajoute l'option par défaut à la liste déroulante
+    categories.forEach(category => {// Parcourt chaque catégorie
+        const option = document.createElement("option");// Crée une nouvelle option pour la catégorie
+        option.value = category.id;// Définit l'ID de la catégorie comme valeur
+        option.textContent = category.name;// Définit le nom de la catégorie comme texte de l'option
+        select.appendChild(option);// Ajoute l'option à la liste déroulante
+    });
+}
+// Appel des fonctions pour initialiser les éléments avec les catégories
+createFilterButtons();// Crée les boutons de filtre 
+populateCategorySelect();// Remplit la liste déroulante des catégories 
+
+// Fonction pour afficher les travaux sur la page principale
+async function displayWorks(filter = 'tous') {
+    let works = await getWorks(); // Récupérer les travaux depuis l'API
+    gallery.innerHTML = ''; // Vide la galerie avant d'ajouter les nouveaux éléments
+    let filteredWorks = works;// Par défaut, aucun filtrage (affiche tous les travaux)
+    if (filter !== 'tous') {
+ // Filtre les travaux par catégorie si un filtre est appliqué
+        filteredWorks = works.filter(work => work.category && work.category.name.toLowerCase() === filter.toLowerCase());
+    }
+
+    for (let work of filteredWorks) {// Parcourt chaque travail filtré
+        let figure = document.createElement('figure');// Crée un élément <figure> pour chaque travail
+        figure.setAttribute('data-id',work.id);// Ajoute l'ID du travail comme attribut data-id
+        let img = document.createElement('img');// Crée un élément <img> pour l'image du travail
+        img.src = work.imageUrl;// Définit la source de l'image
+        img.alt = work.title;// Ajoute un texte alternatif à l'image
+        let figcaption = document.createElement('figcaption');// Crée une légende pour la figure
+        figcaption.textContent = work.title;// Définit le texte de la légende comme étant le titre du travail
+        figure.appendChild(img);// Ajoute l'image à l'élément <figure>
+        figure.appendChild(figcaption);// Ajoute la légende à l'élément <figure>
+        gallery.appendChild(figure);// Ajoute l'élément <figure> à la galerie
+    }
+    checkLoginStatus(); // Vérifier le statut de connexion après l'affichage des travaux
+}
 // Création des boutons de filtre avec les catégories récupérées
 async function createFilterButtons() {
     const categories = await getCategories(); // Récupère les catégories 
@@ -73,66 +132,6 @@ async function createFilterButtons() {
         });
         buttonContainer.appendChild(button); // Ajoute le bouton au conteneur
     });
-}
-// Remplit la liste déroulante de catégories dans le formulaire d'ajout 
-async function populateCategorySelect() {
-    const categories = await getCategories();// Récupère les catégories
-    const select = document.getElementById("modalCategory");// Sélectionne la liste déroulante de catégories
-    select.innerHTML = '';// Réinitialise la liste déroulante
-    const defaultOption = document.createElement("option");// Crée une option par défaut
-    defaultOption.value = "";// Aucune valeur par défaut
-    defaultOption.selected = true;// Définit cette option comme sélectionnée par défaut
-    defaultOption.disabled = true;// Désactive l'option par défaut
-    select.appendChild(defaultOption);// Ajoute l'option par défaut à la liste déroulante
-    categories.forEach(category => {// Parcourt chaque catégorie
-        const option = document.createElement("option");// Crée une nouvelle option pour la catégorie
-        option.value = category.id;// Définit l'ID de la catégorie comme valeur
-        option.textContent = category.name;// Définit le nom de la catégorie comme texte de l'option
-        select.appendChild(option);// Ajoute l'option à la liste déroulante
-    });
-}
-// Appel des fonctions pour initialiser les éléments avec les catégories
-createFilterButtons();// Crée les boutons de filtre 
-populateCategorySelect();// Remplit la liste déroulante des catégories 
-// Récupération des travaux depuis l'API
-
-async function getWorks() {
-    try {
-        let response = await fetch("http://localhost:5678/api/works"); // Envoie une requete GET pour récupérer les travaux 
-        if (!response.ok) {
-            throw new Error(`Erreur ${response.status}: ${response.statusText}`); // Lève une erreur si la réponse n'est pas OK
-        }
-        return await response.json();// Retourne les données JSON des travaux
-    } catch (error) {
-        console.error("Erreur de chargement des travaux:", error);// Affiche l'erreur dans la console
-        alert("Erreur de chargement des travaux. Veuillez réessayer.");// Affiche une alerte en cas d'erreur
-        return []; // Renvoie un tableau vide en cas d'erreur
-    }
-}
-// Fonction pour afficher les travaux sur la page principale
-
-async function displayWorks(filter = 'tous') {
-    let works = await getWorks(); // Récupérer les travaux depuis l'API
-    gallery.innerHTML = ''; // Vide la galerie avant d'ajouter les nouveaux éléments
-    let filteredWorks = works;// Par défaut, aucun filtrage (affiche tous les travaux)
-    if (filter !== 'tous') {
- // Filtre les travaux par catégorie si un filtre est appliqué
-        filteredWorks = works.filter(work => work.category && work.category.name.toLowerCase() === filter.toLowerCase());
-    }
-
-    for (let work of filteredWorks) {// Parcourt chaque travail filtré
-        let figure = document.createElement('figure');// Crée un élément <figure> pour chaque travail
-        figure.setAttribute('data-id',work.id);// Ajoute l'ID du travail comme attribut data-id
-        let img = document.createElement('img');// Crée un élément <img> pour l'image du travail
-        img.src = work.imageUrl;// Définit la source de l'image
-        img.alt = work.title;// Ajoute un texte alternatif à l'image
-        let figcaption = document.createElement('figcaption');// Crée une légende pour la figure
-        figcaption.textContent = work.title;// Définit le texte de la légende comme étant le titre du travail
-        figure.appendChild(img);// Ajoute l'image à l'élément <figure>
-        figure.appendChild(figcaption);// Ajoute la légende à l'élément <figure>
-        gallery.appendChild(figure);// Ajoute l'élément <figure> à la galerie
-    }
-    checkLoginStatus(); // Vérifier le statut de connexion après l'affichage des travaux
 }
 // Vérification du statut de connexion et initialisation
 document.addEventListener('DOMContentLoaded', function () {
@@ -365,6 +364,7 @@ modalForm.addEventListener("submit", async (e) => {
     const title = document.getElementById("title").value;// Récupère le titre du projet 
     const category = document.getElementById("modalCategory").value;// Récupère la catégorie sélectionnée
     const imageFile = document.getElementById("file").files[0];// Récupère le fichier d'image sélectionné
+    
 // Vérifie que tous les champs sont remplis avant de continuer
     if (!title || !category || !imageFile) {
         alert("Veuillez remplir tous les champs !"); //Alerte si un champ est vide 
