@@ -1,9 +1,5 @@
-// Log pour confirmer que le script JavaScript est chargé correctement
-console.log('script chargé'); 
 // Exécution lorsque le DOM est entièrement chargé
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOM complètement chargé'); // Vérifie que le DOM est prêt à être manipulé
-
 // Récupération du formulaire de connexion par son ID
     const loginForm = document.getElementById('login-form');
     if (!loginForm) {
