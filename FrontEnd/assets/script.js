@@ -1,4 +1,3 @@
-console.log("Chargement de la version mise à jour de script.js");
 // Sélection des éléments DOM
 let LogoutBtn=document.querySelector("#logoutBtn")// Sélectionne le bouton "logout" dans le DOM
 let gallery = document.querySelector('.gallery');// Sélectionne la galerie dans le DOM
@@ -67,10 +66,10 @@ async function populateCategorySelect() {
     defaultOption.disabled = true;// Désactive l'option par défaut
     select.appendChild(defaultOption);// Ajoute l'option par défaut à la liste déroulante
     categories.forEach(category => {// Parcourt chaque catégorie
-        const option = document.createElement("option");// Crée une nouvelle option pour la catégorie
-        option.value = category.id;// Définit l'ID de la catégorie comme valeur
-        option.textContent = category.name;// Définit le nom de la catégorie comme texte de l'option
-        select.appendChild(option);// Ajoute l'option à la liste déroulante
+    const option = document.createElement("option");// Crée une nouvelle option pour la catégorie
+    option.value = category.id;// Définit l'ID de la catégorie comme valeur
+    option.textContent = category.name;// Définit le nom de la catégorie comme texte de l'option
+    select.appendChild(option);// Ajoute l'option à la liste déroulante
     });
 }
 // Appel des fonctions pour initialiser les éléments avec les catégories
@@ -229,7 +228,6 @@ function logout() {
     updateEditBarVisibility(); // Mettre à jour la visibilité de la bande noir après la déconnexion
 }
 // fonction pour gérer l'ouverture de la modale de galerie
-console.log("openGalleryBtn")
 function displayModal() {
     openGalleryBtn.addEventListener("click", () => { // Ajoute un écouteur d'évenement pour le bouton d'ouverture de la galerie     
         containerModal.style.display = "flex";// Affiche le conteneur de la modale 
@@ -365,12 +363,6 @@ modalForm.addEventListener("submit", async (e) => {
     const category = document.getElementById("modalCategory").value;// Récupère la catégorie sélectionnée
     const imageFile = document.getElementById("file").files[0];// Récupère le fichier d'image sélectionné
     
-// Vérifie que tous les champs sont remplis avant de continuer
-    if (!title || !category || !imageFile) {
-        alert("Veuillez remplir tous les champs !"); //Alerte si un champ est vide 
-        return;// Arrète l'exécution si des champs sont vides
-    }
-
 // Initialisez formData avant d'entrer dans le bloc try
     const formData = new FormData();
     formData.append("title", title);// Ajout le titre au FormData
