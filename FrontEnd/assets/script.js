@@ -114,6 +114,7 @@ async function createFilterButtons() {
 // Ajouter le bouton "Tous"
     const allButton = document.createElement('button');// Crée un nouveau bouton 
     allButton.id = 'filter-all'; // Définit l'ID du bouton 
+    allButton.classList.add('button-active');
     allButton.textContent = 'Tous';// Définit le texte du bouton 
     allButton.addEventListener('click', () => {// Ajoute un écouteur d'événement pour le clic
         displayWorks('tous');// Affiche tous les travaux 
