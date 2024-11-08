@@ -359,6 +359,10 @@ function resetFormFields() {
 //chargement de la modale pour soumettre un nouveau projet 
 modalForm.addEventListener("submit", async (e) => {
     e.preventDefault();// Empèche l'envoi par défaut du formulaire
+// Réinitialiser le message d'erreur avant la soumission
+    const errorMessage = document.getElementById("form-error-message");
+    errorMessage.style.display = "none"; // Cache le message d'erreur au début
+
 
     const title = document.getElementById("title").value;// Récupère le titre du projet 
     const category = document.getElementById("modalCategory").value;// Récupère la catégorie sélectionnée
@@ -392,18 +396,15 @@ modalForm.addEventListener("submit", async (e) => {
 
         displayModalWorks();// Met à jour l'affichage des travaux 
         displayWorks();// Rafraichit l'affichage des travaux 
-        resetFormFields();// Réinitialise les champs du formulaire
+// Après une soumission réussie, réinitialiser le formulaire
+        resetFormFields();
         modalAddWorks.style.display = "none";//Masque la modale D'ajout
         modal1.style.display = "flex";// Affiche la première modale
     } catch (error) {
         console.error("Erreur lors de l'ajout du projet:", error);
-        const errorMessage = document.getElementById("error-message");
-        if (errorMessage) {
-            errorMessage.textContent = "Une erreur est survenue lors de l'ajout du projet. Veuillez réessayer.";
-        } else {
-            alert("Une erreur est survenue lors de l'ajout du projet. Veuillez réessayer.");
+        const errorMessage = document.getElementById("form-error-message");
+        errorMessage.textContent = "Une erreur est survenue lors de l'ajout du projet. Veuillez réessayer.";
         }
-    }
 });   
 displayWorks(); // rafraichir la galerie principale
 
@@ -415,6 +416,10 @@ const btnValidForm = document.querySelector(".btnValider");
 
 // Fonction pour vérifier si tous les champs sont remplis
 function checkFormValidity() {
+// Réinitialiser le message d'erreur 
+    const errorMessage = document.getElementById("form-error-message");
+    errorMessage.style.display = "none"; // Cache le message d'erreur par défaut
+
 // Vérifier que le titre, la catégorie et l'image sont remplis
     const isTitleFilled = titleInput.value.trim() !== "";// Vérifie que le titre n'est pas vide
     const isCategorySelected = categorySelect.value !== "";// Vérifie qu'une catégorie est sélectionnée
@@ -422,6 +427,21 @@ function checkFormValidity() {
 
 // Si tous les champs sont remplis, activer le bouton ; sinon, le désactiver
       btnValidForm.disabled = !(isTitleFilled && isCategorySelected && isImageSelected);
+// Afficher le message d'erreur si un champ est manquant
+    if (!isTitleFilled) {
+        errorMessage.textContent = "Le titre est requis.";
+        errorMessage.style.display = "block";
+    } else if (!isCategorySelected) {
+        errorMessage.textContent = "La catégorie est requise.";
+        errorMessage.style.display = "block";
+    } else if (!isImageSelected) {
+        errorMessage.textContent = "L'image est requise.";
+        errorMessage.style.display = "block";
+    }
+// Si tous les champs sont valides, retirer le message d'erreur
+    if (isTitleFilled && isCategorySelected && isImageSelected) {
+        errorMessage.style.display = "none"; // Cache le message d'erreur
+    }
 // Activer ou désactiver le bouton "Valider" en fonction des champs remplis
       if (!btnValidForm.disabled) {
         btnValidForm.classList.add("valid");// Ajoute la classe "valid" si le bouton est actif
