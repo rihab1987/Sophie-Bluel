@@ -552,12 +552,7 @@ figure {
 	.modalBorder2{
 		border: 1px solid lightgray;
 	}
-#error-message{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: red;
-}
+
 	.btnValider{
 		display: flex;
     justify-content: center;
@@ -593,5 +588,11 @@ figure {
 	z-index: 1000; /* S'assurer qu'elle est au-dessus des autres éléments */
     height: 3%;
   }
-  
+  #form-error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+	margin-bottom: 30px;
+	margin-left: 180px ;
+} 
   
