@@ -83,7 +83,15 @@ async function displayWorks(filter = 'tous') {
     let filteredWorks = works;// Par défaut, aucun filtrage (affiche tous les travaux)
     if (filter !== 'tous') {
  // Filtre les travaux par catégorie si un filtre est appliqué
-        filteredWorks = works.filter(work => work.category && work.category.name.toLowerCase() === filter.toLowerCase());
+        filteredWorks = [];
+        for(let i = 0;i < works.length;i++) {
+            const work = works[i];
+            if (work.category && work.category.name.toLowerCase()=== filter.toLowerCase()) {
+                filteredWorks.push(work)
+            }
+
+        }
+
     }
 
     for (let work of filteredWorks) {// Parcourt chaque travail filtré
