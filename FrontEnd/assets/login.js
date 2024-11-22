@@ -1,7 +1,7 @@
 // Exécution lorsque le DOM est entièrement chargé
 document.addEventListener('DOMContentLoaded', function () {
 // Récupération du formulaire de connexion par son ID
-    const loginForm = document.getElementById('login-form');
+    const loginForm = document.getElementById('login-form');//Récupérer le formulaire de connexion 
     if (!loginForm) {
         console.error('Le formulaire de connexion n\'existe pas.');
         return;
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 // Ajout d'un écouteur d'événement sur le formulaire pour gérer la soumission
-    loginForm.addEventListener('submit', async function (event) {
+    loginForm.addEventListener('submit', async function (event) {// Ajouter un écouteur d'évenement pour gérer la soumission du formulaire
         event.preventDefault(); // Empêche le rechargement de la page lors de la soumission du formulaire
 
 // Récupération des valeurs des champs "email" et "password"
