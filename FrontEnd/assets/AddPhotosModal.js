@@ -1,25 +1,26 @@
-//Gère les boutons de la modale 
+// Définir la fonction "displayAddModal"
 function displayAddModal() {
-    modalBtn.addEventListener("click", () => {
+// Gestion de l'ouverture de la modale d'ajout photos
+    modalBtn.addEventListener("click", () => {// Déclencher l'ouverture de la modale quand l'utilisateur clique sur le bouton "modalBtn"
         modalAddWorks.style.display = "flex";// Affiche la modale d'ajout 
         modal1.style.display = "none";// Masque la première modale
-        resetFormFields(); // Reset les champs lorsque la modale est ouverte
-        resetFileInput(); // Reset le champ de fichier
+        resetFormFields(); // Réinitialise les champs du formulaire
+        resetFileInput(); // Réinitialise le champ de fichier
     });
-//Gère le retour à la première modale 
+//Gère du retour à la première modale 
     modalArrow.addEventListener("click", () => {
         resetFormFields();// Réinitialise les champs
         resetFileInput();// Réinitialise le champ de fichier
         modalAddWorks.style.display = "none";// Masque la modale d'ajout
         modal1.style.display = "flex";// Affiche la première modale 
     });
-    // Gère la fermeture de la modale d'ajout
+// Gère la fermeture de la modale d'ajout
     modalAddClose.addEventListener("click", () => {
         resetFormFields(); // Réinitialise les champs
         containerModal.style.display = "none";// Masque le conteneur de la modale 
     });
 } 
-// Appel de la fonction pour activer les boutons de la modale d'ajout
+// Appel de la fonction pour mettre en place les écouteurs d'évenements pour les boutons et les actions de la modale d'ajout
 displayAddModal();
 
 //Ecouteur d'évenement pour télécharger une image/ajouter un projet dans la modale
@@ -28,7 +29,7 @@ inputFile.addEventListener("change", () => {
     if (file) {
         const reader = new FileReader(); // Crée un nouvel objet FileReader
         reader.onload = function (e) { 
-            previewImg.src = e.target.result; // Affiche l'aperçu de l'image
+            previewImg.src = e.target.result; // l'aperçu de l'image est affiché dans "previewImg"
             previewImg.style.display = "flex"; // Affiche l'aperçu de l'image
             labelFile.style.display = "none"; // Cache le label après sélection de l'imag
             modalAddPhoto.style.display = "none"; // Cache l'élément d'ajout de photo
@@ -42,7 +43,7 @@ inputFile.addEventListener("change", () => {
     });
         
     
-//fonction pour enlever l'aperçu de l'image
+//fonction pour réinitialiser l'aperçu de l'image
 function resetFileInput() {
     inputFile.value = ""; // Réinitialise le champ file
     previewImg.src = "";  // Supprime l'aperçu de l'image
@@ -58,7 +59,7 @@ function resetFormFields() {
     resetFileInput(); // Réinitialise l'input file et l'aperçu de l'image
 }
 
-//chargement de la modale pour soumettre un nouveau projet 
+// Soummission du formulaire d'ajout 
 modalForm.addEventListener("submit", async (e) => {
     e.preventDefault();// Empèche l'envoi par défaut du formulaire
 // Réinitialiser le message d'erreur avant la soumission
